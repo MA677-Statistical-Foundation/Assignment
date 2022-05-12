@@ -156,8 +156,11 @@ qqGamma(Jul)
 
 ```{r}
 # read data
-rain <- read.xlsx("Illinois_rain_1960-1964.xlsx")
+illinois_rain <- read.xlsx("Illinois_rain_1960-1964.xlsx")
 # View(rain)
+
+# remove na value
+rain <- na.omit(illinois_rain)
 ```
 
 
@@ -165,7 +168,7 @@ rain <- read.xlsx("Illinois_rain_1960-1964.xlsx")
 Use the data to identify the dstribution of rainfall produced by the storms in southern Illinois. Estimate the parameters of the distribution using MLE. Prepare a discussion of your estimation, including how confident you are about your identification of the distribution and the accuracy of your parameter estimates.
 
 ```{r}
-par(mfrow = c(3,2))
+par(mfrow = c(1,4))
 density(rain$`1960` %>% na.omit()) %>% plot(main='1960')
 density(rain$`1961` %>% na.omit()) %>% plot(main='1961')
 density(rain$`1962` %>% na.omit()) %>% plot(main='1962')
@@ -173,6 +176,7 @@ density(rain$`1963` %>% na.omit()) %>% plot(main='1963')
 density(rain$`1964` %>% na.omit()) %>% plot(main='1964')
 density(unlist(rain) %>% na.omit()) %>% plot(main='Total')
 ```
+
 ```{r}
 # MSE estimation
 fit1 <- fitdist(unlist(rain) %>% na.omit() %>% c(),'gamma',method='mle') 
@@ -182,6 +186,7 @@ summary(bootdist(fit1))
 The result illustrates the median and 95% confidence interval and MLE fits the rain data good.
 
 ```{r}
+par(mar=c(2,2,2,2))
 plot(fit1)
 ```
 
